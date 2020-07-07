@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DnevnikTroskovaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategorija">
+          <Key>
+            <PropertyRef Name="IdKategorije" />
+          </Key>
+          <Property Name="IdKategorije" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pozicija" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Potkategorija">
+          <Key>
+            <PropertyRef Name="IdPotkategorije" />
+          </Key>
+          <Property Name="IdPotkategorije" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdKategorije" Type="int" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pozicija" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Unos">
+          <Key>
+            <PropertyRef Name="IdUnosa" />
+          </Key>
+          <Property Name="IdUnosa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPotkategorije" Type="int" Nullable="false" />
+          <Property Name="Iznos" Type="float" Nullable="false" />
+          <Property Name="Opis" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Vrsta" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DatumVrijeme" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Potkategorija_ToKategorija">
+          <End Role="Kategorija" Type="Self.Kategorija" Multiplicity="1" />
+          <End Role="Potkategorija" Type="Self.Potkategorija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategorija">
+              <PropertyRef Name="IdKategorije" />
+            </Principal>
+            <Dependent Role="Potkategorija">
+              <PropertyRef Name="IdKategorije" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Unos_ToPotkategorija">
+          <End Role="Potkategorija" Type="Self.Potkategorija" Multiplicity="1" />
+          <End Role="Unos" Type="Self.Unos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Potkategorija">
+              <PropertyRef Name="IdPotkategorije" />
+            </Principal>
+            <Dependent Role="Unos">
+              <PropertyRef Name="IdPotkategorije" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DnevnikTroskovaModelStoreContainer">
+          <EntitySet Name="Kategorija" EntityType="Self.Kategorija" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Potkategorija" EntityType="Self.Potkategorija" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Unos" EntityType="Self.Unos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Potkategorija_ToKategorija" Association="Self.FK_Potkategorija_ToKategorija">
+            <End Role="Kategorija" EntitySet="Kategorija" />
+            <End Role="Potkategorija" EntitySet="Potkategorija" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Unos_ToPotkategorija" Association="Self.FK_Unos_ToPotkategorija">
+            <End Role="Potkategorija" EntitySet="Potkategorija" />
+            <End Role="Unos" EntitySet="Unos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DnevnikTroskovaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kategorija">
+          <Key>
+            <PropertyRef Name="IdKategorije" />
+          </Key>
+          <Property Name="IdKategorije" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pozicija" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Potkategorija" Relationship="Self.FK_Potkategorija_ToKategorija" FromRole="Kategorija" ToRole="Potkategorija" />
+        </EntityType>
+        <EntityType Name="Potkategorija">
+          <Key>
+            <PropertyRef Name="IdPotkategorije" />
+          </Key>
+          <Property Name="IdPotkategorije" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdKategorije" Type="Int32" Nullable="false" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pozicija" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategorija" Relationship="Self.FK_Potkategorija_ToKategorija" FromRole="Potkategorija" ToRole="Kategorija" />
+          <NavigationProperty Name="Unos" Relationship="Self.FK_Unos_ToPotkategorija" FromRole="Potkategorija" ToRole="Unos" />
+        </EntityType>
+        <EntityType Name="Unos">
+          <Key>
+            <PropertyRef Name="IdUnosa" />
+          </Key>
+          <Property Name="IdUnosa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPotkategorije" Type="Int32" Nullable="false" />
+          <Property Name="Iznos" Type="Double" Nullable="false" />
+          <Property Name="Opis" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Vrsta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumVrijeme" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Potkategorija" Relationship="Self.FK_Unos_ToPotkategorija" FromRole="Unos" ToRole="Potkategorija" />
+        </EntityType>
+        <Association Name="FK_Potkategorija_ToKategorija">
+          <End Role="Kategorija" Type="Self.Kategorija" Multiplicity="1" />
+          <End Role="Potkategorija" Type="Self.Potkategorija" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategorija">
+              <PropertyRef Name="IdKategorije" />
+            </Principal>
+            <Dependent Role="Potkategorija">
+              <PropertyRef Name="IdKategorije" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Unos_ToPotkategorija">
+          <End Role="Potkategorija" Type="Self.Potkategorija" Multiplicity="1" />
+          <End Role="Unos" Type="Self.Unos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Potkategorija">
+              <PropertyRef Name="IdPotkategorije" />
+            </Principal>
+            <Dependent Role="Unos">
+              <PropertyRef Name="IdPotkategorije" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DnevnikTroskovaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kategorija" EntityType="Self.Kategorija" />
+          <EntitySet Name="Potkategorija" EntityType="Self.Potkategorija" />
+          <EntitySet Name="Unos" EntityType="Self.Unos" />
+          <AssociationSet Name="FK_Potkategorija_ToKategorija" Association="Self.FK_Potkategorija_ToKategorija">
+            <End Role="Kategorija" EntitySet="Kategorija" />
+            <End Role="Potkategorija" EntitySet="Potkategorija" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Unos_ToPotkategorija" Association="Self.FK_Unos_ToPotkategorija">
+            <End Role="Potkategorija" EntitySet="Potkategorija" />
+            <End Role="Unos" EntitySet="Unos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DnevnikTroskovaModelStoreContainer" CdmEntityContainer="DnevnikTroskovaEntities">
+          <EntitySetMapping Name="Kategorija">
+            <EntityTypeMapping TypeName="DnevnikTroskovaModel.Kategorija">
+              <MappingFragment StoreEntitySet="Kategorija">
+                <ScalarProperty Name="IdKategorije" ColumnName="IdKategorije" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="Pozicija" ColumnName="Pozicija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Potkategorija">
+            <EntityTypeMapping TypeName="DnevnikTroskovaModel.Potkategorija">
+              <MappingFragment StoreEntitySet="Potkategorija">
+                <ScalarProperty Name="IdPotkategorije" ColumnName="IdPotkategorije" />
+                <ScalarProperty Name="IdKategorije" ColumnName="IdKategorije" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+                <ScalarProperty Name="Pozicija" ColumnName="Pozicija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Unos">
+            <EntityTypeMapping TypeName="DnevnikTroskovaModel.Unos">
+              <MappingFragment StoreEntitySet="Unos">
+                <ScalarProperty Name="IdUnosa" ColumnName="IdUnosa" />
+                <ScalarProperty Name="IdPotkategorije" ColumnName="IdPotkategorije" />
+                <ScalarProperty Name="Iznos" ColumnName="Iznos" />
+                <ScalarProperty Name="Opis" ColumnName="Opis" />
+                <ScalarProperty Name="Vrsta" ColumnName="Vrsta" />
+                <ScalarProperty Name="DatumVrijeme" ColumnName="DatumVrijeme" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

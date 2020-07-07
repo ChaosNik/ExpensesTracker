@@ -1,0 +1,172 @@
+﻿<Window x:Class="DnevnikTroskova.Pretrazivanje"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DnevnikTroskova"
+        mc:Ignorable="d"
+        Title="Pretraživanje" WindowStartupLocation="CenterScreen" Height="560" Width="1110" FontSize="24" Icon="pack://siteoforigin:,,,/Resources/Icon.png" Closing="Window_Closing">
+    <Grid>
+        <Label x:Name="labelKategorija_Copy" Content="Način odabira datuma:" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="250" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="47"/>
+        <ComboBox x:Name="comboBoxVrstaDatuma" HorizontalAlignment="Left" Height="40" Margin="290,10,0,0" Text="" VerticalAlignment="Top" Width="250" FontSize="24" SelectedIndex="0" DropDownClosed="ComboBoxVrstaDatuma_DropDownClosed">
+            <ComboBoxItem Content="Sve"/>
+            <ComboBoxItem Content="Dan"/>
+            <ComboBoxItem Content="Mjesec"/>
+            <ComboBoxItem Content="Godina"/>
+            <ComboBoxItem Content="Interval"/>
+        </ComboBox>
+        <Label x:Name="labelOd" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" Width="90" Height="40" FontSize="24" HorizontalContentAlignment="Right">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Content" Value="Datum:"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxVrstaDatuma,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Content" Value="Od:" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxVrstaDatuma,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Sve">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <DatePicker x:Name="datePickerOd" HorizontalAlignment="Left" Margin="105,77,0,0" VerticalAlignment="Top" Width="155" FontSize="24" CalendarClosed="DatePickerOd_CalendarClosed">
+            <DatePicker.Style>
+                <Style TargetType="DatePicker">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxVrstaDatuma,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Sve">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DatePicker.Style>
+        </DatePicker>
+        <Label x:Name="labelDo" Content="Do:" HorizontalAlignment="Left" Margin="290,76,0,0" VerticalAlignment="Top" Width="90" Height="40" FontSize="24" HorizontalContentAlignment="Right">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxVrstaDatuma,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <DatePicker x:Name="datePickerDo" HorizontalAlignment="Left" Margin="385,76,0,0" VerticalAlignment="Top" Width="155" FontSize="24" CalendarClosed="DatePickerDo_CalendarClosed">
+            <DatePicker.Style>
+                <Style TargetType="DatePicker">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxVrstaDatuma,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DatePicker.Style>
+        </DatePicker>
+        <Label x:Name="labelKategorija" Content="Kategorija:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,146,0,0" VerticalAlignment="Top" Width="250" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="48"/>
+        <ComboBox x:Name="comboBoxKategorija" HorizontalAlignment="Left" Height="40" Margin="10,194,0,0" Text="" VerticalAlignment="Top" Width="250" FontSize="24" SelectionChanged="ComboBoxKategorija_DropDownCLosed"/>
+        <Label x:Name="labelPotkategorija" Content="Potkategorija:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="290,146,0,0" VerticalAlignment="Top" Width="250" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="48"/>
+        <ComboBox x:Name="comboBoxPotkategorija" HorizontalAlignment="Left" Height="40" Margin="290,194,0,0" Text="" VerticalAlignment="Top" Width="250" FontSize="24" SelectionChanged="ComboBoxPotkategorija_DropDownCLosed">
+            <ComboBox.Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxKategorija,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Sve">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+        <Label x:Name="labelOpis" Content="Opis:" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,268,0,0" VerticalAlignment="Top" Width="69" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="40"/>
+        <TextBox x:Name="textBoxOpis" HorizontalAlignment="Left" Height="40" Margin="84,268,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="456" FontSize="24" TextChanged="TextBoxOpis_TextChanged"/>
+        <ComboBox x:Name="comboBoxCijenaInterval" HorizontalAlignment="Left" Height="40" Margin="10,341,0,0" VerticalAlignment="Top" Width="250" FontSize="24" SelectedIndex="0" SelectionChanged="ComboBoxCijenaInterval_SelectionChanged">
+            <ComboBoxItem Content="Vrijednost"/>
+            <ComboBoxItem Content="Interval"/>
+        </ComboBox>
+        <ComboBox x:Name="comboBoxPrihodiRashodi" HorizontalAlignment="Left" Height="40" Margin="290,341,0,0" VerticalAlignment="Top" Width="250" FontSize="24" SelectedIndex="0" SelectionChanged="ComboBoxPrihodiRashodi_SelectionChanged">
+            <ComboBoxItem Content="Sve"/>
+            <ComboBoxItem Content="Prihodi"/>
+            <ComboBoxItem Content="Rashodi"/>
+        </ComboBox>
+        <Label x:Name="labelIznosOd" HorizontalAlignment="Left" Margin="10,400,0,0" VerticalAlignment="Top" Width="90" Height="41" FontSize="24" HorizontalContentAlignment="Right">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Content" Value="Iznos:"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxCijenaInterval,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Content" Value="Od:" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <TextBox x:Name="textBoxIznosOd" HorizontalAlignment="Left" Height="40" Margin="105,402,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" Width="155" FontSize="24" TextChanged="TextBoxIznosOd_TextChanged"/>
+        <Label x:Name="labelIznosDo" Content="Do:" HorizontalAlignment="Left" Margin="290,400,0,0" VerticalAlignment="Top" Width="90" Height="41" FontSize="24" HorizontalContentAlignment="Right">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxCijenaInterval,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <TextBox x:Name="textBoxIznosDo" HorizontalAlignment="Left" Height="40" Margin="385,401,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" Width="155" FontSize="24" TextChanged="TextBoxIznosDo_TextChanged">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=comboBoxCijenaInterval,
+                                                   Path=SelectedItem.Content}" 
+                                 Value="Interval">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <DataGrid x:Name="dataGridUnosiPrihodi" ItemsSource="{Binding Tabela}" AutoGenerateColumns="False" Height="490" Width="512" Margin="580,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="12" IsReadOnly="True">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridUnosiPrihodi_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Item1}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Kategorija" Binding="{Binding Item2}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Potkategorija" Binding="{Binding Item3}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Iznos" Binding="{Binding Item4}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Opis" Binding="{Binding Item5}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

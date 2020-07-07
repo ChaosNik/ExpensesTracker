@@ -1,0 +1,147 @@
+﻿<Window x:Class="DnevnikTroskova.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DnevnikTroskova"
+        mc:Ignorable="d"
+        Title="Dnevnik troškova" WindowStartupLocation="CenterScreen" Height="560" Width="1110" FontSize="24" Icon="pack://siteoforigin:,,,/Resources/Icon.png" Closing="Window_Closing">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <!--MenuItem Header="Uređivanje">
+                    <MenuItem Header="Kategorije i potkategorije" Click="MenuUređivanjeKategorijeIPotkategorije_Click"/>
+                <!/>
+                <!" MenuItem Header="Prikazi">
+                    <MenuItem Header="Po danu"/>
+                    <MenuItem Header="Po mjesecu"/>
+                    <MenuItem Header="Po godini"/>
+                    <MenuItem Header="Po deset godina"/>
+                    <MenuItem Header="Po kategoriji"/>
+                </MenuItem-->
+                <MenuItem Header="Kategorije i potkategorije" Click="MenuUređivanjeKategorijeIPotkategorije_Click"/>
+                <MenuItem Header="Izvještaji">
+                    <MenuItem Header="Mjesečni" Click="MenuIzvještajiMjesečni_Click"/>
+                    <MenuItem Header="Godišnji" Click="MenuIzvještajiGodišnji_Click"/>
+                    <MenuItem Header="Intervalski" Click="MenuIzvještajiIntervalski_Click"/>
+                </MenuItem>
+                <MenuItem Header="Pretraživanje" Click="MenuPretraživanje_Click"/>
+            </Menu>
+            <StackPanel Margin="0,0,0,10"></StackPanel>
+        </DockPanel>
+
+        <Label x:Name="labelRashodi" Content="Dnevni rashodi" Background="Salmon" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="380" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="42"/>
+        <DataGrid x:Name="dataGridUnosiRashodi" ItemsSource="{Binding tabelaRashodi}" AutoGenerateColumns="False" Height="260" Width="380" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="12" IsReadOnly="True" >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Rashodi_Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Iznos" Binding="{Binding Iznos}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Kategorija" Binding="{Binding Potkategorija.Kategorija.Naziv}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Potkategorija" Binding="{Binding Potkategorija.Naziv}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Opis" Binding="{Binding Opis}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label x:Name="labelPrihodi" Content="Dnevni prihodi" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="400,20,0,0" VerticalAlignment="Top" Width="380" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="42"/>
+        <DataGrid x:Name="dataGridUnosiPrihodi" ItemsSource="{Binding tabelaPrihodi}" AutoGenerateColumns="False" Height="260" Width="380" Margin="400,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="12" IsReadOnly="True" >
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Prihodi_Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Iznos" Binding="{Binding Iznos}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Kategorija" Binding="{Binding Potkategorija.Kategorija.Naziv}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Potkategorija" Binding="{Binding Potkategorija.Naziv}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Opis" Binding="{Binding Opis}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label x:Name="labelDatum" Content="Datum" HorizontalContentAlignment="Center"  HorizontalAlignment="Left" Margin="11,320,0,0" VerticalAlignment="Top" Width="170" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50"/>
+        <DatePicker x:Name="datePickerDatum" HorizontalAlignment="Left" Height="40" Margin="11,371,0,0" VerticalAlignment="Top" Width="170" FontSize="24" SelectedDateChanged="DatePickerDatum_SelectedDateChanged"/>
+
+        <Label x:Name="labelIznos" Content="Iznos" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="191,321,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50"/>
+        <TextBox x:Name="textBoxIznos" Background="Salmon" HorizontalAlignment="Left" Height="40" Margin="191,371,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" FontSize="24"/>
+
+        <Label x:Name="labelKategorija" Content="Kategorija" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="323,320,0,0" VerticalAlignment="Top" Width="145" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50"/>
+        <ComboBox x:Name="comboBoxKategorija" HorizontalAlignment="Left" Height="40" Margin="323,371,0,0" Text="" VerticalAlignment="Top" Width="145" FontSize="24" DropDownClosed="ComboBoxKategorija_DropDownClosed"/>
+
+        <Label x:Name="labelPotkategorija" Content="Potkategorija" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="473,321,0,0" VerticalAlignment="Top" Width="162" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50"/>
+        <ComboBox x:Name="comboBoxPotkategorija" HorizontalAlignment="Left" Height="40" Margin="481,371,0,0" Text="" VerticalAlignment="Top" Width="145" FontSize="24" DropDownClosed="ComboBoxPotkategorija_DropDownClosed" IsEnabled="False"/>
+
+        <Label x:Name="labelOpis" Content="Opis" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="250,418,0,0" VerticalAlignment="Top" Width="61" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="39"/>
+        <TextBox x:Name="textBoxOpis" HorizontalAlignment="Left" Height="40" Margin="323,418,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="303" FontSize="24"/>
+
+        <Button x:Name="buttonPlusMinus" HorizontalAlignment="Left" Margin="53,418,0,0" VerticalAlignment="Top" Width="86" Height="86" FontSize="24" Click="ButtonPlusMinus_Click" Background="{x:Null}" BorderBrush="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+        <Button x:Name="buttonDodaj" Content="Dodaj" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="323,464,0,0" VerticalAlignment="Top" Width="145" Height="40" FontSize="24" Click="ButtonDodaj_Click"/>
+        <Button x:Name="buttonPonisti" Content="Poništi" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="481,464,0,0" VerticalAlignment="Top" Width="145" Height="40" FontSize="24" Click="ButtonPonisti_Click"/>
+
+        <Label x:Name="labelDan" Content="Dan" HorizontalAlignment="Left" Margin="640,321,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="textBoxDanMinus" Text="0.00" Background="Salmon" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="640,417,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="textBoxDanPlus" Text="0.00" Background="LightGreen" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="640,371,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <Label x:Name="labelDanUkupno" Content="0.00" HorizontalAlignment="Left" Margin="640,464,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.521,0.524" FontSize="24" Height="40" HorizontalContentAlignment="Right" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+
+        <Label x:Name="labelMjesecTabela" Content="Mjesečni rashodi i prihodi" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="790,20,0,0" VerticalAlignment="Top" Width="290" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="42"/>
+        <DataGrid x:Name="dataGridMjesec" ItemsSource="{Binding mjesec}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="260" Margin="790,60,0,0" VerticalAlignment="Top" Width="290" FontSize="12" IsReadOnly="True">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Mjesec_Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Item1}" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Rashodi" Binding="{Binding Item3}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Background" Value="Salmon"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="0.00"  >
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Prihodi" Binding="{Binding Item2}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="Background" Value="LightGreen"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="0.00"  >
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label x:Name="labelMjesec" Content="Mjesec" HorizontalAlignment="Left" Margin="790,321,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="49" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="textBoxMjesecMinus" Text="0.00" Background="Salmon" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="790,417,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="textBoxMjesecPlus" Text="0.00" Background="LightGreen" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="790,371,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <Label x:Name="labelMjesecUkupno" Content="0.00" HorizontalAlignment="Left" Margin="790,464,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="40" HorizontalContentAlignment="Right" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+
+        <Label x:Name="labelGodina" Content="Godina" HorizontalAlignment="Left" Margin="938,321,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="50" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="textBoxGodinaMinus" Text="0.00" Background="Salmon" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="940,417,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="textBoxGodinaPlus" Text="0.00" Background="LightGreen" IsEnabled="False" HorizontalAlignment="Left" Height="40" Margin="940,371,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="24" HorizontalContentAlignment="Right"/>
+        <Label x:Name="labelGodinaUkupno" Content="0.00" HorizontalAlignment="Left" Margin="940,464,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.596,0.538" FontSize="24" Height="40" HorizontalContentAlignment="Right" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+        </Grid>
+</Window>

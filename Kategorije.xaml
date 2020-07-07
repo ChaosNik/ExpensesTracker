@@ -1,0 +1,48 @@
+﻿<Window x:Class="DnevnikTroskova.Kategorije"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DnevnikTroskova"
+        mc:Ignorable="d"
+        Title="Kategorije" Height="560" Width="1110" Closing="Window_Closing" Icon="pack://siteoforigin:,,,/Resources/Icon.png" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="85*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dataGridKategorije" ItemsSource="{Binding kategorije}" SelectionChanged="Kategorije_Selection_Changed" AutoGenerateColumns="False" Height="400" Width="525" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" IsReadOnly="True" SelectedIndex="0" SelectionMode="Single" Grid.ColumnSpan="2" >
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="Kategorije_Row_DoubleClick"/>
+                </Style>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Kategorija" Binding="{Binding Naziv}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="dataGridPotkategorije" ItemsSource="{Binding izabranePodkategorije}" AutoGenerateColumns="False" Height="400" Width="525" Margin="529,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" IsReadOnly="True" Grid.Column="1" >
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="Potkategorije_Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Potkategorija" Binding="{Binding Naziv}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBox x:Name="textKategorija" HorizontalAlignment="Left" Height="23" Margin="223,433,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="210" Grid.Column="1"/>
+        <Button x:Name="buttonDodajKategoriju" Content="Dodaj" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="223,473,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="24" Click="ButtonDodajKategoriju_Click" Grid.Column="1"/>
+        <Button x:Name="buttonObrisiKategoriju" Content="Obriši" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="333,473,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="24" Click="ButtonObrisiKategoriju_Click" Grid.Column="1"/>
+        <Button x:Name="buttonKategorijaGore" Content="" HorizontalAlignment="Left" Margin="42,439,0,0" VerticalAlignment="Top" Width="70" Height="70" Click="ButtonKategorijaGore_Click" Grid.Column="1"/>
+        <Button x:Name="buttonKategorijaDole" Content="" HorizontalAlignment="Left" Margin="133,439,0,0" VerticalAlignment="Top" Width="70" Height="70" Grid.Column="1" Click="ButtonKategorijaDole_Click"/>
+
+        <TextBox x:Name="textPotkategorija" HorizontalAlignment="Left" Height="23" Margin="785,429,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="210" Grid.Column="1"/>
+        <Button x:Name="buttonDodajPotkategoriju" Content="Dodaj" Background="Green" Foreground="White" HorizontalAlignment="Left" Margin="785,469,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="24" Click="ButtonDodajPotkategoriju_Click" Grid.Column="1"/>
+        <Button x:Name="buttonObrisiPotkategoriju" Content="Obriši" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="895,469,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="24" Click="ButtonObrisiPotkategoriju_Click" Grid.Column="1"/>
+        <Button x:Name="buttonPotkategorijaGore" Content="" HorizontalAlignment="Left" Margin="615,435,0,0" VerticalAlignment="Top" Width="70" Height="70" Grid.Column="1" Click="ButtonPotkategorijaGore_Click"/>
+        <Button x:Name="buttonPotkategorijaDole" Content="" HorizontalAlignment="Left" Margin="695,435,0,0" VerticalAlignment="Top" Width="70" Height="70" Grid.Column="1" Click="ButtonPotkategorijaDole_Click"/>
+    </Grid>
+</Window>
